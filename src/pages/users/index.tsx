@@ -80,7 +80,7 @@ export default function UserList() {
                   </Box>
                 </Td>
                 <Td>03 de abr de 2021</Td>
-                <Td width="4">
+                <Td>
                   <Button
                     as="a"
                     size="sm"
