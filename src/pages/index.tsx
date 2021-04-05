@@ -1,6 +1,9 @@
 import { Flex, Button, Stack } from '@chakra-ui/react'
 
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+import * as yup from 'yup'
 
 import { Input } from '../components/Form'
 
@@ -9,11 +12,20 @@ type SignInFormData = {
   password: string
 }
 
+const signInFormSchema = yup.object().shape({
+  email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
+  password: yup.string().required('Senha obrigatória')
+})
+
 export default function SignIn() {
-  const { register, handleSubmit } = useForm()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm({ resolver: yupResolver(signInFormSchema) })
 
   const handleSignIn: SubmitHandler<SignInFormData> = (data, event) => {
-    console.log(data)
+    console.log('A', data)
   }
 
   return (
@@ -29,11 +41,27 @@ export default function SignIn() {
         onSubmit={handleSubmit(handleSignIn)}
       >
         <Stack spacing="4">
-          <Input {...register('email')} type="email" label="E-mail" />
-          <Input {...register('password')} type="password" label="Senha" />
+          <Input
+            {...register('email')}
+            error={errors.email}
+            type="email"
+            label="E-mail"
+          />
+          <Input
+            {...register('password')}
+            error={errors.password}
+            type="password"
+            label="Senha"
+          />
         </Stack>
 
-        <Button type="submit" sz="lg" mt="6" colorScheme="pink">
+        <Button
+          type="submit"
+          sz="lg"
+          mt="6"
+          colorScheme="pink"
+          isLoading={isSubmitting}
+        >
           Entrar
         </Button>
       </Flex>
