@@ -25,6 +25,7 @@ import { RiAddLine, RiPencilLine } from 'react-icons/ri'
 import { Header } from '../../components/Header'
 import { Pagination } from '../../components/Pagination'
 import { Sidebar } from '../../components/Sidebar'
+import { api } from '../../services/api'
 
 type User = {
   name: string
@@ -34,8 +35,7 @@ type User = {
 
 export default function UserList() {
   const { data, isLoading, isFetching, error } = useQuery('users', async () => {
-    const response = await fetch('http://localhost:3000/api/users')
-    const data = await response.json()
+    const { data } = await api.get('users')
 
     const users: User[] = data.users.map((user: User) => ({
       ...user,
@@ -65,7 +65,7 @@ export default function UserList() {
           <Flex mb="8" justify="space-between" align="center">
             <Heading size="lg" fontWeight="normal">
               Usuários
-              
+
               {!isLoading && isFetching && (
                 <Spinner size="sm" color="gray.500" ml="4" />
               )}
