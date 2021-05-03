@@ -3,6 +3,7 @@ import { createServer, Factory, Model, Response } from 'miragejs'
 import faker from 'faker'
 
 type User = {
+  id: number
   name: string
   email: string
   created_at: string
@@ -50,6 +51,7 @@ export function makeServer() {
         return new Response(200, { 'x-total-count': String(total) }, { users })
       })
 
+      this.get('/users/:id')
       this.post('/users')
 
       this.namespace = '' // reset routes namespace
